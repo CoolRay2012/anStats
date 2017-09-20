@@ -1,0 +1,30 @@
+{
+  "name": "anStats",
+  "productName": "anStats",
+  "version": "0.1.2",
+  "description": "Visualizes android device state",
+  "license": "MIT",
+  "author": {
+    "name": "Gu Lei",
+    "email": "coolray2012@gmail.com"
+  },
+  "main": "main.js",
+  "build": {
+    "appId": "com.electron.anstats",
+    "icon": "icon.ico"
+  },
+  "scripts": {
+    "start": "electron .",
+    "pack": "electron-packager . anStats --platform=win32 --arch=x64",
+    "dist": "electron-builder"
+  },
+  "devDependencies": {
+    "electron": "^1.7.6",
+    "electron-builder": "^19.27.7",
+    "electron-packager": "^5.2.1"
+  },
+  "postinstall": "eletron-builder install-app-deps",
+  "dependencies": {
+    "d3": "^3.5.6"
+  }
+}

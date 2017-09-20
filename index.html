@@ -1,0 +1,169 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>anStats</title>
+  <style>
+  body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+  .graph .axis {
+    stroke-width: 1;
+  }
+  .graph .axis .tick line {
+    stroke: black;
+  }
+  .graph .axis .tick text {
+    fill: black;
+    font-size: 0.7em;
+  }
+  .graph .axis .domain {
+    fill: none;
+    stroke: black;
+  }
+  .graph .group {
+    fill: none;
+    stroke: black;
+    stroke-width: 1.5;
+  }
+  .grid .tick {
+    stroke: lightgrey;
+    stroke-opacity: 0.7;
+    shape-rendering: crispEdges;
+  }
+  .grid path {
+    stroke-width: 0;
+  }
+  </style>
+  <link rel="stylesheet" href="styles/photon.css">
+</head>
+<body>
+  <div class="window">
+    <header class="toolbar toolbar-header">
+      <div class="toolbar-actions">
+        <div class="btn-group">
+          <button class="btn btn-negative" id="btnConnectState" onclick="connect()">
+            No device
+          </button>
+          <button class="btn btn-primary" id="btnCharging" onclick="toggleCharging()">
+            Charging?
+          </button>
+        </div>
+      </div>
+    </header>
+    <div class="window-content">
+      <div class="pane-group">
+        <div class="pane">
+          <ul class="list-group">
+            <li class="list-group-item">
+              <table class="table-striped">
+                <thead>
+                  <tr>
+                    <th><strong>Loading</strong></th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="graph" id="graphtop"></td>
+                    <td>Total
+                      <p id='toptotal' style="color:red"><strong>NA</strong></p>
+                      Avg
+                      <p id='toptotalavg' style="color:orange"><strong>NA</strong></p>
+                      GPU
+                      <p id='gputop' style="color:gray"><strong>NA</strong></p>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </li>
+            <li class="list-group-item">
+              <table class="table-striped">
+                <thead>
+                  <tr>
+                    <th><strong>Frequency</strong></th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="graph" id="graphfreq"></td>
+                    <td>CPU0~3
+                      <p id='cpufreq0' style="color:orange"><strong>na</strong></p>
+                      CPU4~7
+                      <p id='cpufreq4' style="color:green"><strong>na</strong></p>
+                      GPU
+                      <p id='gpufreq' style="color:blue"><strong>na</strong></p>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </li>
+            <li class="list-group-item">
+              <table class="table-striped">
+                <thead>
+                  <tr>
+                    <th><strong>Temperature</strong></th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="graph" id="graphtemp"></td>
+                    <td>Battery
+                      <p id='tempbatteryshow' style="color:red"><strong>NA</strong></p>
+                      CPU0-3
+                      <p id='tempcpu0show' style="color:green"><strong>NA</strong></p>
+                      CPU4-7
+                      <p id='tempcpu4show' style="color:blue"><strong>NA</strong></p>
+                      GPU
+                      <p id='tempgpushow' style="color:orange"><strong>NA</strong></p>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </li>
+            <li class="list-group-item">
+              <table class="table-striped">
+                <thead>
+                  <tr>
+                    <th><strong>Backlight brightness</strong></th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="graph" id="graphbkl"></td>
+                    <td id='bklshow' style="color:green"><strong>NA</strong></td>
+                  </tr>
+                </tbody>
+              </table>
+            </li>
+          </ul>
+        </div>
+        <div class="pane">
+          <ul class="list-group">
+            <li class="list-group-item">
+              <table class="table-striped">
+                <thead>
+                  <tr>
+                    <th><strong>TOP detail</strong></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td id='topshow'>NA</td>
+                  </tr>
+                </tbody>
+              </table>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="monitor.js"></script>
+
+</body>
+</html>
