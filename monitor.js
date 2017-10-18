@@ -298,18 +298,25 @@ function connect(){
   d = c.stdout.toString().match(/adbd cannot run as root in production builds/);
   //if device offline, do nothing
   if (d) {
-    alert("Function limiated on production build");
+    alert("Function limited on production build");
   }
 
   c = spawnSync('adb', ['devices']);
   d = c.stdout.toString().match(/(.+)\s+\bdevice\b/);
   if (!d) {
-  //if device offline, do nothing
+  //device offline, do nothing
     alert("Do device found");
     return;
   }
 
-  //if device online
+  c = spawnSync('adb', ['shell', 'cat /proc/cpuinfo']);
+  d = c.stdout.toString().match(/Device\s+:\s(\b\w+\b)/);
+  if (!d) {
+  //device offline, do nothing
+    alert("Do device name found");
+    return;
+  }
+  //device online
   document.getElementById('btnConnectState').className = "btn btn-positive";
   document.getElementById('btnConnectState').innerHTML = d[1];
   //check charging state
