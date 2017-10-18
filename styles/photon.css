@@ -2221,7 +2221,8 @@ table {
 }
 
 thead {
-  background-color: #5bd46d;
+  color: #FFFFFF;
+  background-color: #888888;
 }
 
 tbody {

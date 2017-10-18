@@ -3,17 +3,19 @@ const d3 = require('d3');
 const LIMIT = 30;//ugly, todo
 
 function ChartData(props) {
+  this.count = props.count || 0;
+  this.cntid = props.cntid || '';
   this.limit = props.limit || LIMIT;
   this.duration = props.duration || 2000;//not only the update freqency, but both the monitor freqency
   this.now = function(){return new Date(Date.now() - this.duration)};
   this.margin = props.margin || {
     top: 10,
-    right: 20,
+    right: 0,
     bottom: 15,
     left: 50
   };
-  this.width = props.width || (800 - this.margin.left - this.margin.right);
-  this.height = props.height || (130 - this.margin.top - this.margin.bottom);
+  this.width = props.width || (850 - this.margin.left - this.margin.right);
+  this.height = props.height || (150 - this.margin.top - this.margin.bottom);
   this.yMAX = props.yMAX || 2000000;
   this.yMIN = props.yMIN || 0;
   this.yAutoScale = props.yAutoScale || true;
@@ -107,7 +109,7 @@ function tick(chartData) {
     var adMin = [];
     for (var name in chartData.groups) {
       var group = chartData.groups[name];
-      var dataMax = Math.max(...group.data);
+      var dataMax = Math.max(...group.data);// The new spread operator is a shorter way of writing the *apply* solution to get the maximum of an array
       var dataMin = Math.min(...group.data);
       adMax.push(dataMax);
       adMin.push(dataMin);
@@ -133,5 +135,6 @@ function tick(chartData) {
 module.exports = {
   ChartData: ChartData,
   realTimeChart: realTimeChart,
-  tick: tick
+  tick: tick,
+  LIMIT: LIMIT
 }
