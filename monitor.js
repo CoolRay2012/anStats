@@ -17,6 +17,62 @@ const realTimeChart = require('./realtimechart');
 
 let connected = false;
 
+let outrx_old = 0;
+let outtx_old = 0;
+let outtotal_old = 0;
+
+let chartDataCPUTop = new realTimeChart.ChartData({
+  //duration: 5000,
+  //limit: 12,
+  yMAX: 100, //max cputop for temp
+  yAutoScale: true,
+  graphid: "#graphtop",
+  cntid: "cnt_loading",
+  groups: {
+    user : {
+      data: d3.range(realTimeChart.LIMIT).map(function() {
+        return 0;
+      })
+    },
+    system : {
+      data: d3.range(realTimeChart.LIMIT).map(function() {
+        return 0;
+      })
+    },
+    iow : {
+      data: d3.range(realTimeChart.LIMIT).map(function() {
+        return 0;
+      })
+    },
+    irq : {
+      data: d3.range(realTimeChart.LIMIT).map(function() {
+        return 0;
+      })
+    },
+    total : {
+      textId: 'toptotal',
+      data: d3.range(realTimeChart.LIMIT).map(function() {
+        return 0;
+      })
+    },
+    avg : {
+      textId: 'toptotalavg',
+      data: d3.range(realTimeChart.LIMIT).map(function() {
+        return 0;
+      })
+    },
+    //gpu is handled special!!!!
+    gpu : {
+      get: 'cat /sys/devices/soc/1c00000.qcom,kgsl-3d0/kgsl/kgsl-3d0/gpu_busy_percentage',
+      scale: 1,
+      textId: 'gputop',
+      data: d3.range(realTimeChart.LIMIT).map(function() {
+        return 0;
+      })
+    }
+  }
+});
+
 let chartDataCPUFreq = new realTimeChart.ChartData({
   yMAX: 2000000,
   yAutoScale: true,
@@ -27,7 +83,6 @@ let chartDataCPUFreq = new realTimeChart.ChartData({
       get: 'cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq',
       scale: 1,
       textId: 'cpufreq0',
-      color: 'blue',
       data: d3.range(realTimeChart.LIMIT).map(function() {
         return 200;
       })
@@ -36,7 +91,6 @@ let chartDataCPUFreq = new realTimeChart.ChartData({
       get: 'cat /sys/devices/system/cpu/cpu4/cpufreq/scaling_cur_freq',
       scale: 1,
       textId: 'cpufreq4',
-      color: 'green',
       data: d3.range(realTimeChart.LIMIT).map(function() {
         return 200;
       })
@@ -45,7 +99,6 @@ let chartDataCPUFreq = new realTimeChart.ChartData({
       get: 'cat /sys/devices/soc/1c00000.qcom,kgsl-3d0/kgsl/kgsl-3d0/gpuclk',
       scale: 0.001,
       textId: 'gpufreq',
-      color: 'orange',
       data: d3.range(realTimeChart.LIMIT).map(function() {
         return 200;
       })
@@ -53,64 +106,7 @@ let chartDataCPUFreq = new realTimeChart.ChartData({
   }
 });
 
-let  chartDataCPUTop = new realTimeChart.ChartData({
-  //duration: 5000,
-  //limit: 12,
-  yMAX: 100, //max cputop for temp
-  yAutoScale: true,
-  graphid: "#graphtop",
-  cntid: "cnt_loading",
-  groups: {
-    user : {
-      color: 'blue',
-      data: d3.range(realTimeChart.LIMIT).map(function() {
-        return 0;
-      })
-    },
-    system : {
-      color: 'green',
-      data: d3.range(realTimeChart.LIMIT).map(function() {
-        return 0;
-      })
-    },
-    iow : {
-      color: 'yellow',
-      data: d3.range(realTimeChart.LIMIT).map(function() {
-        return 0;
-      })
-    },
-    irq : {
-      color: 'pink',
-      data: d3.range(realTimeChart.LIMIT).map(function() {
-        return 0;
-      })
-    },
-    total : {
-      color: 'red',
-      data: d3.range(realTimeChart.LIMIT).map(function() {
-        return 0;
-      })
-    },
-    avg : {
-      color: 'gray',
-      data: d3.range(realTimeChart.LIMIT).map(function() {
-        return 0;
-      })
-    },
-    //gpu is handled special!!!!
-    gpu : {
-      get: 'cat /sys/devices/soc/1c00000.qcom,kgsl-3d0/kgsl/kgsl-3d0/gpu_busy_percentage',
-      scale: 1,
-      textId: 'gputop',
-      color: 'orange',
-      data: d3.range(realTimeChart.LIMIT).map(function() {
-        return 0;
-      })
-    }
-  }
-});
-
-let  chartDataTemp = new realTimeChart.ChartData({
+let chartDataTemp = new realTimeChart.ChartData({
   yMAX: 50,
   yMIN: 30,
   yAutoScale: true,
@@ -119,39 +115,64 @@ let  chartDataTemp = new realTimeChart.ChartData({
   groups: {
     batterytemp : {
       get: 'cat /sys/class/power_supply/battery/temp',
-      scale: 1,
       scale: 0.1,
       textId: 'tempbatteryshow',
-      color: 'red',
       data: d3.range(realTimeChart.LIMIT).map(function() {
         return 30; // equal to yMIN
       })
     },
-    cpu0 : {
+    cpu0temp : {
       get: 'cat /sys/devices/virtual/thermal/thermal_zone12/temp',
       scale: 1,
       textId: 'tempcpu0show',
-      color: 'green',
       data: d3.range(realTimeChart.LIMIT).map(function() {
         return 30; // equal to yMIN
       })
     },
-    cpu4 : {
+    cpu4temp : {
       get: 'cat /sys/devices/virtual/thermal/thermal_zone16/temp',
       scale: 1,
       textId: 'tempcpu4show',
-      color: 'blue',
       data: d3.range(realTimeChart.LIMIT).map(function() {
         return 30; // equal to yMIN
       })
     },
-    gpu : {
+    gputemp : {
       get: 'cat /sys/devices/virtual/thermal/thermal_zone17/temp',
       scale: 1,
       textId: 'tempgpushow',
-      color: 'orange',
       data: d3.range(realTimeChart.LIMIT).map(function() {
         return 30; // equal to yMIN
+      })
+    }
+  }
+});
+
+let chartDataWlan = new realTimeChart.ChartData({
+  yAutoScale: true,
+  graphid: "#graphwlan",
+  cntid: "cnt_wlan",
+  groups: {
+    wlanrx : {
+      get: 'cat /sys/class/net/wlan0/statistics/rx_bytes',
+      scale: 0.001,
+      textId: 'speedwlanrxshow',
+      data: d3.range(realTimeChart.LIMIT).map(function() {
+        return 0; // equal to yMIN
+      })
+    },
+    wlantx : {
+      get: 'cat /sys/class/net/wlan0/statistics/tx_bytes',
+      scale: 0.001,
+      textId: 'speedwlantxshow',
+      data: d3.range(realTimeChart.LIMIT).map(function() {
+        return 0; // equal to yMIN
+      })
+    },
+    wlantotal : {
+      textId: 'speedwlantotalshow',
+      data: d3.range(realTimeChart.LIMIT).map(function() {
+        return 0; // equal to yMIN
       })
     }
   }
@@ -168,7 +189,6 @@ let  chartDataBKL = new realTimeChart.ChartData({
       get: 'cat /sys/class/leds/lcd-backlight/brightness',
       scale: 1,
       textId: 'bklshow',
-      color: 'gray',
       data: d3.range(realTimeChart.LIMIT).map(function() {
         return 0; // equal to yMIN
       })
@@ -220,27 +240,21 @@ function monitorCPUTop() {
       Number(topFound[2])+
       Number(topFound[3])+
       Number(topFound[4]);
-    document.getElementById('toptotal').innerText = toptotal + '%';
+    document.getElementById(chartDataCPUTop.groups.total.textId).innerText = toptotal + '%';
     chartDataCPUTop.groups.total.data.push(toptotal);
 
     var avgToptotal = Math.ceil(chartDataCPUTop.groups.total.data.reduce(function(sum, a){
       return sum + a;
     }, 0) / (chartDataCPUTop.groups.total.data.length || 1));
-    document.getElementById('toptotalavg').innerText = avgToptotal + '%';
+    document.getElementById(chartDataCPUTop.groups.avg.textId).innerText = avgToptotal + '%';
     chartDataCPUTop.groups.avg.data.push(avgToptotal);
 
     //gpu top is handled special here
     var out = adbShellOnce(chartDataCPUTop.groups.gpu.get);
     out = out.match(/^(\d+)\s/);
-    document.getElementById('gputop').innerText = out[1] + '%';
+    document.getElementById(chartDataCPUTop.groups.gpu.textId).innerText = out[1] + '%';
     chartDataCPUTop.groups.gpu.data.push(out[1]);
 
-    for (var name in chartDataCPUTop.groups) {
-      var group = chartDataCPUTop.groups[name];
-      // Remove oldest data point from each group
-      group.data.shift();
-      group.path.attr('d', chartDataCPUTop.line);
-    }
     //update chart
     realTimeChart.tick(chartDataCPUTop);
 
@@ -262,15 +276,45 @@ function monitorCycle(){
       out = Math.ceil(out * group.scale);
       document.getElementById(group.textId).innerText = out;
       group.data.push(out);
-      // Remove oldest data point from each group
-      group.data.shift();
-      group.path.attr('d', chart.line);
     }
     //update chart
     realTimeChart.tick(chart);
 
     document.getElementById(chart.cntid).innerText = chart.count++;
   })
+
+  //Wlan
+  var speed = 0;
+
+  var outrx = adbShellOnce(chartDataWlan.groups.wlanrx.get);
+  outrx = Math.ceil(outrx * chartDataWlan.groups.wlanrx.scale);
+  if(chartDataWlan.count !== 0) {//drop first read
+    speed = outrx - outrx_old;
+  }
+  document.getElementById(chartDataWlan.groups.wlanrx.textId).innerText = speed;
+  chartDataWlan.groups.wlanrx.data.push(speed);
+  outrx_old = outrx;
+
+  var outtx = adbShellOnce(chartDataWlan.groups.wlantx.get);
+  outtx = Math.ceil(outtx * chartDataWlan.groups.wlantx.scale);
+  if(chartDataWlan.count !== 0) {//drop first read
+    speed = outtx - outtx_old;
+  }
+  document.getElementById(chartDataWlan.groups.wlantx.textId).innerText = speed;
+  chartDataWlan.groups.wlantx.data.push(speed);
+  outtx_old = outtx;
+
+  var outtotal = outrx + outtx;
+  if(chartDataWlan.count !== 0) {//drop first read
+    speed = outtotal - outtotal_old;
+  }
+  document.getElementById(chartDataWlan.groups.wlantotal.textId).innerText = speed;
+  chartDataWlan.groups.wlantotal.data.push(speed);
+  outtotal_old = outtotal;
+
+  //update chart
+  realTimeChart.tick(chartDataWlan);
+  document.getElementById(chartDataWlan.cntid).innerText = chartDataWlan.count++;
 }
 
 function monitor() {
@@ -281,11 +325,12 @@ function monitor() {
 }
 
 function initChart(){
-  charts.forEach(function(item, index, array) {
-    realTimeChart.realTimeChart(item);
+  charts.forEach(function(chart, index, array) {
+    realTimeChart.realTimeChart(chart);
   })
   //topchart is special
   realTimeChart.realTimeChart(chartDataCPUTop);
+  realTimeChart.realTimeChart(chartDataWlan);
 }
 
 function connect(){

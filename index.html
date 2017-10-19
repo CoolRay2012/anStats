@@ -8,7 +8,7 @@
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   }
   .graph .axis {
-    stroke-width: 1;
+    stroke-width: 1.5;
   }
   .graph .axis .tick line {
     stroke: black;
@@ -21,18 +21,99 @@
     fill: none;
     stroke: black;
   }
-  .graph .group {
-    fill: none;
-    stroke: black;
-    stroke-width: 1.5;
-  }
   .grid .tick {
     stroke: lightgrey;
     stroke-opacity: 0.7;
     shape-rendering: crispEdges;
   }
-  .grid path {
+  .grid .path {
     stroke-width: 0;
+  }
+  .user{
+    fill: none;
+    stroke: blue;
+  }
+  .system{
+    fill: none;
+    stroke: green;
+  }
+  .iow{
+    fill: none;
+    stroke: yellow;
+  }
+  .irq{
+    fill: none;
+    stroke: pink;
+  }
+  .total{
+    stroke: red;
+    fill: red;
+    fill-opacity: 0.1;
+  }
+  .avg{
+    fill: none;
+    stroke: orangered;
+    stroke-width: 1.5;
+  }
+  .gpu{
+    fill: none;
+    stroke: orange;
+    stroke-width: 1.5;
+  }
+  .cpufreq0{
+    fill: none;
+    stroke: blue;
+    stroke-width: 1.5;
+  }
+  .cpufreq4{
+    fill: none;
+    stroke: green;
+    stroke-width: 1.5;
+  }
+  .gpufreq{
+    fill: none;
+    stroke: orange;
+    stroke-width: 1.5;
+  }
+  .batterytemp{
+    fill: none;
+    stroke: red;
+    stroke-width: 1.5;
+  }
+  .cpu0temp{
+    fill: none;
+    stroke: green;
+    stroke-width: 1.5;
+  }
+  .cpu4temp{
+    fill: none;
+    stroke: blue;
+    stroke-width: 1.5;
+  }
+  .gputemp{
+    fill: none;
+    stroke: orange;
+    stroke-width: 1.5;
+  }
+  .wlanrx{
+    fill: none;
+    stroke: blue;
+    stroke-width: 1.5;
+  }
+  .wlantx{
+    fill: none;
+    stroke: green;
+    stroke-width: 1.5;
+  }
+  .wlantotal{
+    stroke: red;
+    fill: red;
+    fill-opacity: 0.1;
+  }
+  .bkl{
+    fill: none;
+    stroke: red;
+    stroke-width: 1.5;
   }
   </style>
   <link rel="stylesheet" href="styles/photon.css">
@@ -127,6 +208,28 @@
               <table class="table-striped">
                 <thead>
                   <tr>
+                    <th><strong>Wlan</strong></th>
+                    <th id='cnt_wlan'></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="graph" id="graphwlan"></td>
+                    <td>Total
+                      <p id='speedwlantotalshow' style="color:red"><strong>NA</strong></p>
+                      Rx-kb
+                      <p id='speedwlanrxshow' style="color:green"><strong>NA</strong></p>
+                      Tx-kb
+                      <p id='speedwlantxshow' style="color:blue"><strong>NA</strong></p>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </li>
+            <li class="list-group-item">
+              <table class="table-striped">
+                <thead>
+                  <tr>
                     <th><strong>Brightness</strong></th>
                     <th id='cnt_bright'></th>
                   </tr>
@@ -134,7 +237,7 @@
                 <tbody>
                   <tr>
                     <td class="graph" id="graphbkl"></td>
-                    <td id='bklshow' style="color:gray"><strong>NA</strong></td>
+                    <td id='bklshow' style="color:red"><strong>NA</strong></td>
                   </tr>
                 </tbody>
               </table>
