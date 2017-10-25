@@ -13,9 +13,13 @@ function createWindow() {
     name: "anMonitor_main",
     width: 1000,
     height: 600,
-    //frame: false
+    //frame: false,
+    //transparent: true,
     skiptaskbar: true,
-    toolbar: false
+    toolbar: false,
+    show: false,// move win.show to event 'ready-to-show'
+    // backgroundColor: '#2e2c29',
+    // fullscreen: true,
   })
   win.setMenu(null);
   win.loadURL(url.format({
@@ -23,12 +27,14 @@ function createWindow() {
     protocol: 'file:',
     slashes: true
   }))
-  win.webContents.openDevTools()
+  //win.webContents.openDevTools()
+  win.once('ready-to-show', ()=> {
+    win.show()
+    win.maximize();
+    win.webContents.send('readyShow');
+  })
   win.on('closed', () => {
     win = null
-  })
-  win.once('ready-to-show', () => {
-    monitor.initMonitor();
   })
 }
 

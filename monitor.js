@@ -14,6 +14,9 @@
 const { spawn, spawnSync, execFile } = require('child_process');
 const d3 = require('d3');
 const realTimeChart = require('./realtimechart');
+// const {ipcRenderer} = require('electron')
+//
+// ipcRenderer.on('readyShow',connect());
 
 let connected = false;
 
