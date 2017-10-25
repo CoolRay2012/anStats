@@ -24,13 +24,13 @@ function ChartData(props) {
 }
 
 function realTimeChart(chartData) {
-  chartData.xScale = d3.time.scale().domain([chartData.now()-(chartData.limit-2), chartData.now()-chartData.duration]).range([0, chartData.width]);
+  chartData.xScale = d3.time.scale().domain([chartData.now()-chartData.limit*chartData.duration, chartData.now()-chartData.duration]).range([0, chartData.width]);
   chartData.yScale = d3.scale.linear().domain([chartData.yMIN, chartData.yMAX]).range([chartData.height, 0]);
   // define the area
   chartData.line = d3.svg.area()
   .interpolate('monotone')
   .x(function(d, i) {
-    return chartData.xScale(chartData.now() - (chartData.limit - 1 -i) * chartData.duration);
+    return chartData.xScale(chartData.now() - (chartData.limit-i) * chartData.duration);
   })
   .y0(chartData.height)
   .y1(function(d) {
@@ -101,34 +101,44 @@ function realTimeChart(chartData) {
     group.path = chartData.paths.append('path')
     .data([group.data])
     .attr('class', name)
-    /*
-    group.area = chartData.paths.append('path')
-    .data([group.data])
-    .attr('class', name + ' group')
-    .style('fill', 'lightsteelblue');
-    */
   }
 }
 
 function tick(chartData) {
   // Shift X domain
-  now = new Date()
+  now = new Date();
+
   for (var name in chartData.groups) {
     var group = chartData.groups[name];
+    group.path
+    .attr('d', chartData.line)
+    //.attr('transform', 'translate(' + chartData.xScale(now - (chartData.limit - 1) * chartData.duration) + ')')
+    //.transition()
+    //.duration(chartData.duration)
+    //.ease('linear')
+
     // Remove oldest data point from each group
     group.data.shift();
-    group.path.attr('d', chartData.line)
-    .attr('transform', 'translate(' + chartData.xScale(now - (chartData.limit - 1) * chartData.duration) + ')')
-    .transition()
-    .duration(chartData.duration)
-    .ease('linear')
   }
-  //chartData.xScale.domain([now - (chartData.limit - 2) * chartData.duration, now - chartData.duration])
-  chartData.xScale.domain([now - (chartData.limit - 1) * chartData.duration, now])
-  // Slide x-axis left
-  chartData.axis.transition()
+  // Slide paths left
+  /*
+  chartData.paths
+  .transition()
+  .attr('transform', 'translate(' + chartData.xScale(now - (chartData.limit - 1) * chartData.duration) + ')')
   .duration(chartData.duration)
   .ease('linear')
+  */
+  //.each('end', tick)
+
+  //chartData.xScale.domain([now - (chartData.limit - 2) * chartData.duration, now - chartData.duration])
+  chartData.xScale.domain([now - chartData.limit * chartData.duration, now - chartData.duration])
+  // Slide x-axis left
+  chartData.axis
+  /*
+  .transition()
+  .duration(chartData.duration)
+  .ease('linear')
+  */
   .call(chartData.xAxis)
 
   //if(chartData.yAutoScale === true) {
@@ -151,15 +161,6 @@ function tick(chartData) {
     .call(chartData.yAxis)
   //}
 
-  // Slide paths left
-  /*
-  chartData.paths
-  .attr('transform', 'translate(' + chartData.xScale(now - (chartData.limit - 1) * chartData.duration) + ')')
-  .transition()
-  .duration(chartData.duration)
-  .ease('linear')
-  //.each('end', tick)
-  */
 }
 
 module.exports = {
