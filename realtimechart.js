@@ -14,8 +14,8 @@ function ChartData(props) {
     bottom: 15,
     left: 0
   };
-  this.width = props.width || (850 - this.margin.left - this.margin.right);
-  this.height = props.height || (130 - this.margin.top - this.margin.bottom);
+  this.width = props.width || (600 - this.margin.left - this.margin.right);
+  this.height = props.height || (100 - this.margin.top - this.margin.bottom);
   this.yMAX = props.yMAX || 2000000;
   this.yMIN = props.yMIN || 0;
   this.yAutoScale = props.yAutoScale || true;

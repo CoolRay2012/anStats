@@ -140,19 +140,23 @@
               <table class="table-striped">
                 <thead>
                   <tr>
-                    <th><strong>Loading</strong></th>
+                    <th><strong>Loading(0~100)</strong></th>
+                    <th>Value</th>
                     <th id='cnt_loading'></th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
                     <td class="graph" id="graphtop"></td>
-                    <td>CPU
+                    <td>
                       <p id='toptotal' style="color:red"><strong>NA</strong></p>
-                      Avg
                       <p id='toptotalavg' style="color:gray"><strong>NA</strong></p>
-                      GPU
                       <p id='gputop' style="color:orange"><strong>NA</strong></p>
+                    </td>
+                    <td>
+                      <p>CPU</p>
+                      <p>Avg</p>
+                      <p>GPU</p>
                     </td>
                   </tr>
                 </tbody>
@@ -162,19 +166,23 @@
               <table class="table-striped">
                 <thead>
                   <tr>
-                    <th><strong>Frequency</strong></th>
+                    <th><strong>Frequency(MHz)</strong></th>
+                    <th>Value</th>
                     <th id='cnt_freq'></th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
                     <td class="graph" id="graphfreq"></td>
-                    <td>CPU0~3
+                    <td>
                       <p id='cpufreq0' style="color:blue"><strong>na</strong></p>
-                      CPU4~7
                       <p id='cpufreq4' style="color:green"><strong>na</strong></p>
-                      GPU
                       <p id='gpufreq' style="color:orange"><strong>na</strong></p>
+                    </td>
+                    <td>
+                      <p>CPU0~3</p>
+                      <p>CPU4~7</p>
+                      <p>GPU</p>
                     </td>
                   </tr>
                 </tbody>
@@ -184,21 +192,25 @@
               <table class="table-striped">
                 <thead>
                   <tr>
-                    <th><strong>Temperature</strong></th>
+                    <th><strong>Temperature(C)</strong></th>
+                    <th>Value</th>
                     <th id='cnt_temp'></th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
                     <td class="graph" id="graphtemp"></td>
-                    <td>Battery
+                    <td>
                       <p id='tempbatteryshow' style="color:red"><strong>NA</strong></p>
-                      CPU0-3
                       <p id='tempcpu0show' style="color:green"><strong>NA</strong></p>
-                      CPU4-7
                       <p id='tempcpu4show' style="color:blue"><strong>NA</strong></p>
-                      GPU
                       <p id='tempgpushow' style="color:orange"><strong>NA</strong></p>
+                    </td>
+                    <td>
+                      <p>Battery</p>
+                      <p>CPU0~3</p>
+                      <p>CPU4~7</p>
+                      <p>GPU</p>
                     </td>
                   </tr>
                 </tbody>
@@ -208,19 +220,23 @@
               <table class="table-striped">
                 <thead>
                   <tr>
-                    <th><strong>Wlan</strong></th>
+                    <th><strong>Wlan(kb)</strong></th>
+                    <th>Value</th>
                     <th id='cnt_wlan'></th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
                     <td class="graph" id="graphwlan"></td>
-                    <td>Total
+                    <td>
                       <p id='speedwlantotalshow' style="color:red"><strong>NA</strong></p>
-                      Rx-kb
                       <p id='speedwlanrxshow' style="color:green"><strong>NA</strong></p>
-                      Tx-kb
                       <p id='speedwlantxshow' style="color:blue"><strong>NA</strong></p>
+                    </td>
+                    <td>
+                      <p>Total</p>
+                      <p>Rx</p>
+                      <p>Tx</p>
                     </td>
                   </tr>
                 </tbody>
@@ -230,7 +246,8 @@
               <table class="table-striped">
                 <thead>
                   <tr>
-                    <th><strong>Brightness</strong></th>
+                    <th><strong>Brightness(0~255)</strong></th>
+                    <th>Value</th>
                     <th id='cnt_bright'></th>
                   </tr>
                 </thead>
@@ -238,6 +255,9 @@
                   <tr>
                     <td class="graph" id="graphbkl"></td>
                     <td id='bklshow' style="color:red"><strong>NA</strong></td>
+                    <td>
+                      <p>BKL</p>
+                    </td>
                   </tr>
                 </tbody>
               </table>

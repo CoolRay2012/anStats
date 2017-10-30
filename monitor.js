@@ -70,19 +70,19 @@ let chartDataCPUFreq = new realTimeChart.ChartData({
   groups: {
     cpufreq0 : {
       get: 'cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq',
-      scale: 1,
+      scale: 0.001,
       textId: 'cpufreq0',
       data: new Array(realTimeChart.LIMIT).fill(0)
     },
     cpufreq4 : {
       get: 'cat /sys/devices/system/cpu/cpu4/cpufreq/scaling_cur_freq',
-      scale: 1,
+      scale: 0.001,
       textId: 'cpufreq4',
       data: new Array(realTimeChart.LIMIT).fill(0)
     },
     gpufreq : {
       get: 'cat /sys/devices/soc/1c00000.qcom,kgsl-3d0/kgsl/kgsl-3d0/gpuclk',
-      scale: 0.001,
+      scale: 0.000001,
       textId: 'gpufreq',
       data: new Array(realTimeChart.LIMIT).fill(0)
     }
