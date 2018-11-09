@@ -16,4 +16,4 @@ Desktop monitor tool for android phone
 *第二个button是用来切换充电功能的，可以disable/enable charging
 *要切换手机，目前只能关闭重新开启后连接
 
-![](/image/anStats.png)
+![](/anStats.png)
